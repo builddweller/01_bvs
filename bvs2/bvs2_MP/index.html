@@ -1,0 +1,41 @@
+<p style="display: flex; justify-content: center; align-items: center; margin: 0;">
+  <img id="clickableImage" class="fr-dib"
+       src="https://cdn.imweb.me/thumbnail/20250331/3ec3197192cc2.png"
+       style="height: 200px; cursor: pointer; transition: transform 1s linear;">
+</p>
+<p style="text-align: center; font-size: 14px; color: #555;">
+  click 👆
+</p>
+<div id="videoContainer" style="max-height: 0; overflow: hidden; transition: max-height 1s ease; display: flex; justify-content: center; align-items: center;">
+  <iframe id="youtubeVideo" width="315" height="315"
+          src="https://www.youtube.com/embed/videoseries?si=y3ZQ2kB5AQbDA8iw&list=PLJT9m6nXDlsTwW7b9YyxeoxpAHDvmBHlx&controls=0"
+          title="YouTube video player" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+  </iframe>
+</div>
+
+<script>
+  document.getElementById('clickableImage').addEventListener('click', function() {
+    const img = this;
+    const videoContainer = document.getElementById('videoContainer');
+
+    // 이미지가 계속 회전하도록 설정
+    img.style.animation = "rotateImage 2s linear infinite";
+
+    // 유튜브 영상 부드럽게 나타나기
+    setTimeout(() => {
+      videoContainer.style.maxHeight = "400px"; // 충분한 높이로 변경
+    }, 500);
+  });
+
+  // CSS에서 회전 애니메이션 추가
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @keyframes rotateImage {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  `;
+  document.head.appendChild(style);
+</script>
