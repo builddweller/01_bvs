@@ -79,25 +79,25 @@
       }
 
       // 애니메이션 실행
-      canvas.addEventListener('click', () => {
-        if (isAnimating || imgElements.length === 0) return;
-        isAnimating = true;
+      canvas.addEventListener('pointerdown', () => {
+  if (isAnimating || imgElements.length === 0) return;
+  isAnimating = true;
 
-        const targetIndex = currentIndex === 0 ? 99 : 0;
-        const step = currentIndex < targetIndex ? 1 : -1;
+  const targetIndex = currentIndex === 0 ? 99 : 0;
+  const step = currentIndex < targetIndex ? 1 : -1;
 
-        function animate() {
-          if (currentIndex !== targetIndex) {
-            currentIndex += step;
-            drawImage();
-            setTimeout(animate, 15); // 속도 조절
-          } else {
-            isAnimating = false;
-          }
-        }
+  function animate() {
+    if (currentIndex !== targetIndex) {
+      currentIndex += step;
+      drawImage();
+      setTimeout(animate, 15);
+    } else {
+      isAnimating = false;
+    }
+  }
 
-        animate();
-      });
+  animate();
+});
 
       // 반응형 크기 조정
       const resizeObserver = new ResizeObserver(() => {
