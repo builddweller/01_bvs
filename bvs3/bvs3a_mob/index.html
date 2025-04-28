@@ -43,6 +43,10 @@
       const imgElements = [];
       let imagesLoaded = 0;
 
+            // 캔버스 크기 설정
+      canvas.width = 1000;  // 너비 설정
+      canvas.height = 1000; // 높이 설정
+
       // 이미지 로딩
       images.forEach((src, index) => {
         const img = new Image();
