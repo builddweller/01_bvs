@@ -79,7 +79,7 @@
           if (currentIndex !== targetIndex) {
             currentIndex += step;
             drawImage();
-            setTimeout(animate, 30); // 속도 조절
+            setTimeout(animate, 20); // 속도 조절
           } else {
             isAnimating = false;
             direction *= -1; // 방향 전환 (순방향 <-> 역방향)
