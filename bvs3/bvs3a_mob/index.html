@@ -4,21 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>360도 이미지 애니메이션</title>
- <style>
-
+  <style>
     #product360 {
- width: '100%';
-      height: '100%'; /* 필요에 따라 높이를 조정 */
+      width: 100%;
+      height: 100%;
       position: relative;
-      display: flex; /* 플렉스 박스 활성화 */
-      justify-content: center; /* 가로 중앙 정렬 */
-      align-items: center; /* 세로 중앙 정렬 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     canvas {
-      width: 330px; /* 필요에 따라 크기 조정 */
-      height: auto; /* 비율 유지 */
+      width: 330px;
+      height: auto;
       display: block;
+      cursor: pointer;
     }
+    #overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: rgba(200, 200, 200, 0.25); /* 연한 회색 + 투명 */
+  backdrop-filter: blur(6px);             /* 뒤에 배경을 블러 처리 */
+  -webkit-backdrop-filter: blur(6px);     /* Safari 지원 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+#overlay-text {
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+}
   </style>
 </head>
 <body>
@@ -27,7 +47,7 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const canvas = document.getElementById('canvas');
       const ctx = canvas.getContext('2d');
 
@@ -37,15 +57,15 @@
         images.push(`https://raw.githubusercontent.com/builddweller/01_bvs/main/bvs3/bvs3_image/bvs3a/${imageName}.jpg`);
       }
 
-      let currentIndex = 0;
+      let currentIndex = 0; // 항상 0번(1번 이미지)부터 시작
       let isAnimating = false;
-      let imgWidth, imgHeight;
+      let direction = 1; // 1 = 순방향, -1 = 역방향
+
+      canvas.width = 1000;
+      canvas.height = 1000;
+
       const imgElements = [];
       let imagesLoaded = 0;
-
-            // 캔버스 크기 설정
-      canvas.width = 1000;  // 너비 설정
-      canvas.height = 1000; // 높이 설정
 
       // 이미지 로딩
       images.forEach((src, index) => {
@@ -55,9 +75,6 @@
           imgElements[index] = img;
           imagesLoaded++;
           if (imagesLoaded === images.length) {
-            imgWidth = imgElements[0].width;
-            imgHeight = imgElements[0].height;
-            resizeCanvas();
             drawImage();
           }
         };
@@ -70,26 +87,13 @@
         ctx.drawImage(imgElements[currentIndex], 0, 0, canvas.width, canvas.height);
       }
 
-      function resizeCanvas() {
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-        const aspectRatio = imgWidth / imgHeight;
-        if (windowWidth / windowHeight > aspectRatio) {
-          canvas.height = windowHeight;
-          canvas.width = windowHeight * aspectRatio;
-        } else {
-          canvas.width = windowWidth;
-          canvas.height = windowWidth / aspectRatio;
-        }
-      }
-
-      // 애니메이션 실행
       canvas.addEventListener('click', () => {
         if (isAnimating || imgElements.length === 0) return;
         isAnimating = true;
 
-        const targetIndex = currentIndex === 0 ? 99 : 0;
-        const step = currentIndex < targetIndex ? 1 : -1;
+        const totalFrames = imgElements.length;
+        const targetIndex = direction === 1 ? totalFrames - 1 : 0;
+        const step = direction;
 
         function animate() {
           if (currentIndex !== targetIndex) {
@@ -98,23 +102,13 @@
             setTimeout(animate, 15); // 속도 조절
           } else {
             isAnimating = false;
+            direction *= -1; // 방향 전환 (순방향 <-> 역방향)
           }
         }
 
         animate();
       });
 
-      // 반응형 크기 조정
-      const resizeObserver = new ResizeObserver(() => {
-        resizeCanvas();
-        drawImage();
-      });
-      resizeObserver.observe(canvas.parentElement);
-
-      window.addEventListener('resize', () => {
-        resizeCanvas();
-        drawImage();
-      });
     });
   </script>
 </body>
