@@ -19,6 +19,26 @@
       display: block;
       cursor: pointer;
     }
+    #overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: rgba(200, 200, 200, 0.25); /* 연한 회색 + 투명 */
+  backdrop-filter: blur(6px);             /* 뒤에 배경을 블러 처리 */
+  -webkit-backdrop-filter: blur(6px);     /* Safari 지원 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+#overlay-text {
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+}
   </style>
 </head>
 <body>
